@@ -1,35 +1,46 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
+
+
+def robot_topic_create(robot_id, topic):
+	return PythonExpression(["'/rt' + '", robot_id, "' + '/" + topic + "'"])
 
 
 def generate_launch_description():
 	ld = LaunchDescription()
 
-	rt_number_arg = DeclareLaunchArgument(
-		'rt_number',
+	# Arguments
+	ld.add_action(DeclareLaunchArgument(
+		'robot_id',
 		default_value='0',
-		description='Robotont number (for example 50). Used for: camera topic (/rtXX/camera/...) and marker id'
-	)
+		description='used for image_topic (/rtXX/camera/image_raw), camera_info_topic (/rtXX/camera/camera_info) and cmd_vel_topic (/rtXX/cmd_vel)'
+	))
 
-	# Runs by default on Robotont 3 Lite
-	# ld.add_action(Node(
-	# 	package='usb_cam',
-	# 	executable='usb_cam_node_exe',
-	# ))
+	ld.add_action(DeclareLaunchArgument(
+		'marker_id',
+		default_value='0',
+		description='ArUco marker ID to follow'
+	))
 
+	# Nodes
 	ld.add_action(Node(
 		package='ros2_aruco',
 		executable='aruco_node',
 		parameters=[{
-			'image_topic': ['/rt', rt_number, '/camera/image_raw'],
-			'camera_info_topic': ['/rt', rt_number, '/camera/camera_info']
+			'image_topic': robot_topic_create(LaunchConfiguration('robot_id'), 'camera/image_raw'),
+			'camera_info_topic': robot_topic_create(LaunchConfiguration('robot_id'), 'camera/camera_info')
 			}]
 	))
 
 	ld.add_action(Node(
 		package='demo_ar_follow_the_leader',
-		executable='ar_follow_the_leader.py'
+		executable='ar_follow_the_leader.py',
+		parameters=[{
+			'marker_id': LaunchConfiguration('marker_id'),
+			'cmd_vel_topic': robot_topic_create(LaunchConfiguration('robot_id'), 'cmd_vel')
+		}]
 	))
 
 	return ld

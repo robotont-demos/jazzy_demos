@@ -23,10 +23,16 @@ class ArSteeringNode(Node):
 		super().__init__('ar_follow_the_leader')
 
 		self.declare_parameter('marker_id', 0)
+		self.declare_parameter('cmd_vel_topic', '/cmd_vel')
+
 		self.marker_id = self.get_parameter('marker_id').value
+		cmd_vel_topic = self.get_parameter('cmd_vel_topic').value
+
+		self.get_logger().info(f"Marker ID: {self.marker_id}")
+		self.get_logger().info(f"Velocity command topic {cmd_vel_topic}")
 
 		self.sub_poses = self.create_subscription(ArucoMarkers, '/aruco_markers', self.pose_callback, 1)
-		self.pub_twist = self.create_publisher(Twist, '/cmd_vel', 1)
+		self.pub_twist = self.create_publisher(Twist, cmd_vel_topic, 1)
 
 	def pose_callback(self, msg):
 		cmd = Twist()
