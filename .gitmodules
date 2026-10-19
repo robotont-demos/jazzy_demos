@@ -7,3 +7,7 @@
 [submodule "src/robotont_description"]
 	path = src/robotont_description
 	url = https://github.com/robotont/robotont_description
+[submodule "src/demo_ar_steering"]
+	path = src/demo_ar_steering
+	url = https://github.com/robotont-demos/demo_ar_steering.git
+	branch = jazzy
