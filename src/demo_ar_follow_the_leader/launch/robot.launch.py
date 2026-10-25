@@ -24,6 +24,12 @@ def generate_launch_description():
 		description='ArUco marker ID to follow'
 	))
 
+	ld.add_action(DeclareLaunchArgument(
+			'marker_size',
+			default_value='0.0625',
+			description='ArUco marker size in meters'
+	))
+
 	# Nodes
 	ld.add_action(Node(
 		package='ros2_aruco',
