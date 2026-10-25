@@ -1,4 +1,4 @@
-# Robotonnt demos
+# Robotont demos
 
 This is a repository that contants **ROS2 Jazzy** demo packages for Robotont. Note that the repository contains Git **submodules**, which are links to other Git repositories. To clone the repository with submodules use:
 ``` bash
