@@ -11,3 +11,7 @@
 	path = src/demo_ar_steering
 	url = https://github.com/robotont-demos/demo_ar_steering.git
 	branch = jazzy
+[submodule "src/demo_ar_follow_the_leader"]
+	path = src/demo_ar_follow_the_leader
+	url = https://github.com/robotont-demos/demo_ar_follow_the_leader.git
+	branch = jazzy
